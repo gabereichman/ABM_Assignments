@@ -9,8 +9,10 @@ from mesa.visualization.components import AgentPortrayalStyle
 
 ## Define agent portrayal: color, shape, and size
 def agent_portrayal(agent):
+    ## Sets opacity based on each agent's desired share alike
+    opacity = agent.desired_share_alike
     return AgentPortrayalStyle(
-        color = (0, 0, 1, agent.desired_share_alike) if agent.type == 1 else (1, 0, 0, agent.desired_share_alike),
+        color = (0, 0, 1, opacity) if agent.type == 1 else (1, 0, 0, opacity),
         marker= "s",
         size= 75,
     )
@@ -46,6 +48,7 @@ model_params = {
         "max": 1,
         "step": 0.01,
     },
+    ## Desired_share_alike is split now to include min and max value sliders
     "desired_share_alike_min": {
         "type": "SliderFloat",
         "value": 0.25,

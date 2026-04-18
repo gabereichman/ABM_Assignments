@@ -6,6 +6,7 @@ class SchellingAgent(Agent):
         super().__init__(model)
         ## Set agent type
         self.type = agent_type
+        ## Set individual agent's desired share alike
         self.desired_share_alike = desired_share_alike
     ## Define basic decision rule
     def move(self):
@@ -14,12 +15,15 @@ class SchellingAgent(Agent):
             self.pos, moore=True, radius = self.model.radius)
         ## Count neighbors of same type as self
         similar_neighbors = sum([agent.type == self.type for agent in neighbors])
-        ## If an agent has any neighbors (to avoid division by zero), calculate share of neighbors of same type
+        ## If an agent has any neighbors (to avoid division by zero),
+        # calculate share of neighbors of same type
         if neighbors:
             share_alike = similar_neighbors / len(neighbors)
         else:
+            ## If there are no neighbors, presumes the agent is satisfied
             share_alike = 1
-        ## If unhappy with neighbors, move to random empty slot. Otherwise add one to model count of happy agents.
+        ## If unhappy with neighbors, move to random empty slot.
+        # Otherwise add one to model count of happy agents.
         if share_alike < self.desired_share_alike:
             self.model.grid.move_to_empty(self)
         else: 

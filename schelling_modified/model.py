@@ -15,6 +15,7 @@ class SchellingModel(Model):
         self.width = width
         self.height = height
         self.density = density
+        ## Min and max desired share alike parameters are added
         self.desired_share_alike_min = desired_share_alike_min
         self.desired_share_alike_max = desired_share_alike_max
         self.group_one_share = group_one_share
@@ -34,12 +35,14 @@ class SchellingModel(Model):
         )
         ## Place agents randomly around the grid, randomly assigning them to agent types.
         for cont, pos in self.grid.coord_iter():
-            desired_happiness_alike = random.uniform(self.desired_share_alike_min, self.desired_share_alike_max)
+            ## New agent's desired share alike assigned by uniform distribution
+            desired_share_alike = random.uniform(self.desired_share_alike_min, self.desired_share_alike_max)
             if self.random.random() < self.density:
+                ## Parameter for agent desired share alike is passed
                 if self.random.random() < self.group_one_share:
-                    self.grid.place_agent(SchellingAgent(self, 1, desired_happiness_alike), pos)
+                    self.grid.place_agent(SchellingAgent(self, 1, desired_share_alike), pos)
                 else:
-                    self.grid.place_agent(SchellingAgent(self, 0, desired_happiness_alike), pos)
+                    self.grid.place_agent(SchellingAgent(self, 0, desired_share_alike), pos)
         ## Initialize datacollector
         self.datacollector.collect(self)
 
