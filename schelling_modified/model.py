@@ -33,6 +33,8 @@ class SchellingModel(Model):
                 else 0
             }
         )
+        ## Set seed for random package consistency
+        random.seed(seed)
         ## Place agents randomly around the grid, randomly assigning them to agent types.
         for cont, pos in self.grid.coord_iter():
             ## New agent's desired share alike assigned by uniform distribution
