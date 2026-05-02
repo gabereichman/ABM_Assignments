@@ -1,25 +1,30 @@
 from mesa import Agent
 
-class SchellingAgent(Agent):
+class SOPAgent(Agent):
     ## Initiate agent instance, inherit model trait from parent class
-    def __init__(self, model, agent_type):
+    def __init__(self, model, quality, threshold):
         super().__init__(model)
-        ## Set agent type
-        self.type = agent_type
+        ## Set agent initial standing status
+        self.stand = quality > threshold
     ## Define basic decision rule
-    def move(self):
+    def decide(self):
         ## Get list of neighbors within range of sight
         neighbors = self.model.grid.get_neighbors(
             self.pos, moore = True, radius = self.model.radius, include_center = False)
+        neighbors_seen = [neighbor for neighbor in neighbors if neighbor.pos[1] >= self.pos[1]]
         ## Count neighbors of same type as self
-        similar_neighbors = len([n for n in neighbors if n.type == self.type])
-        ## If an agent has any neighbors (to avoid division by zero), calculate share of neighbors of same type
-        if (valid_neighbors := len(neighbors)) > 0:
-            share_alike = similar_neighbors / valid_neighbors
+        standing_neighbors = sum([neighbor.stand for neighbor in neighbors_seen])
+        ## If an agent has equal standing and sitting neighbors, randomly decide
+        prop_standing = standing_neighbors / len(neighbors_seen)
+        if prop_standing == .5:
+            self.decision = self.model.random.random() < .5
         else:
-            share_alike = 0
-        ## If unhappy with neighbors, move to random empty slot. Otherwise add one to model count of happy agents.
-        if share_alike < self.model.desired_share_alike:
-            self.model.grid.move_to_empty(self)
-        else: 
-            self.model.happy +=1   
+            self.decision = prop_standing > .5
+
+        if self.model.order != 'Synchronous':
+            self.update_stand()
+    def update_stand(self):
+        self.stand = self.decision
+        ## If agent will stand, add 1 to standing agents
+        if self.stand:
+            self.model.standing +=1
