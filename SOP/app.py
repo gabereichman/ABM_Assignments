@@ -15,7 +15,7 @@ def agent_portrayal(agent):
         size= 75,
     )
 
-## Enumerate variable parameters in model: seed, grid dimensions, population density, agent preferences, vision, and relative size of groups.
+## Enumerate variable parameters in model
 model_params = {
     "seed": {
         "type": "InputText",
@@ -24,7 +24,7 @@ model_params = {
     },
     "width": {
         "type": "SliderInt",
-        "value": 30,
+        "value": 20,
         "label": "Width",
         "min": 5,
         "max": 100,
@@ -32,32 +32,32 @@ model_params = {
     },
     "height": {
         "type": "SliderInt",
-        "value": 30,
+        "value": 20,
         "label": "Height",
         "min": 5,
         "max": 100,
         "step": 1,
     },
-    "radius": {
-        "type": "SliderInt",
-        "value": 1,
-        "label": "Vision Radius",
-        "min": 1,
-        "max": 5,
-        "step": 1,
-    },
     "order": {
         "type": "Select",
         "value": "Synchronous",
-        "values": ["Synchronous", "Asynchronous-Random", "Asynchronous-Incentive-Based"],
+        "values": ["Synchronous",
+                   "Asynchronous-Random",
+                   "Asynchronous-Incentive-Based"],
         "label": "Activation Order",
+    },
+    "neighborhood": {
+        "type": "Select",
+        "value": "5-Neighbor",
+        "values": ["5-Neighbor", "Cone"],
+        "label": "Neighborhood Type",
     }
 }
 
 ## Instantiate model
 SOP_model = SOPModel()
 
-## Define happiness over time plot
+## Define standing over time plot
 StandingPlot = make_plot_component({"share_standing": "tab:green"})
 
 ## Define space component

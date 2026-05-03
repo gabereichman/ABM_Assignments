@@ -6,7 +6,7 @@
 
 ## Summary
 
-The Standing Ovation Problem Model demonstrates how standing ovations can occur through propogation of standing audience members through a crowd. In the model, each agent represents an audienc member. They have a random chance of standing or remaining seated. Then they look at their fellow audience members and match their state based on the majority in their vision.
+The Standing Ovation Problem Model demonstrates how standing ovations can occur through propogation of standing audience members through a crowd. In the model, each agent represents an audienc member. They initially have a random chance of standing or remaining seated. Then they look at their fellow audience members and match their state based on the majority in their vision.
 
 ## Installation
 
